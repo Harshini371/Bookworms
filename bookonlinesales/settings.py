@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'iam',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist'   
 ]
 
 MIDDLEWARE = [
@@ -79,9 +81,9 @@ WSGI_APPLICATION = 'bookonlinesales.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'BookOnlineSales',
         'USER' : 'postgres',
-        'PASSWORD': 'faak@0496',
+        'PASSWORD': 'Elephant31!',
         'HOST': 'db',
         'PORT': 5432
     }
@@ -142,6 +144,7 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    "BLACKLIST_AFTER_ROTATION": True
 }
 
 #import certifi
@@ -149,5 +152,38 @@ SIMPLE_JWT = {
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'akhiltaj98@gmail.com'
-EMAIL_HOST_PASSWORD = 'vownchxezyfhciie'
+EMAIL_HOST_USER = 'kadiyamsatyamanjuharshini@gmail.com'
+EMAIL_HOST_PASSWORD = 'arblhwrfoouezcxk'
+
+AUTH_USER_MODEL = 'iam.CustomUser'
+
+
+
+API_BASE_URL = 'http://localhost:8080/api/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+
+
+
+
+
+

@@ -45,3 +45,4 @@ django-cors-headers==4.3.1
 setuptools>=69.0.0                            # ✅ Add this
 wheel>=0.41.0                                 # ✅ Add this
 build>=1.0.3                                  # ✅ Add this
+drf-yasg==1.20.0                              # ✅ Add this for API documentation
