@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'iam',
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist'   
+    'rest_framework_simplejwt.token_blacklist',
+    'books' 
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'bookonlinesales.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'BookOnlineSales',
+        'NAME': 'Book1',
         'USER' : 'postgres',
         'PASSWORD': 'Elephant31!',
         'HOST': 'db',
