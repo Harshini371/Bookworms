@@ -53,3 +53,29 @@ class BookEditions(models.Model):
 
     def __str__(self):
         return f"{self.book.title} - {self.language} Edition"
+
+class Order(models.Model):
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="orders")
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.CharField(
+        max_length=20,
+        choices=[("pending", "Pending"), ("paid", "Paid"), ("shipped", "Shipped"), ("cancelled", "Cancelled")],
+        default="pending"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    edition = models.ForeignKey('books.BookEditions', on_delete=models.CASCADE, related_name="order_items")
+    quantity = models.PositiveIntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount_amount = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
+    def get_total_price(self):
+        return (self.unit_price - self.discount_amount) * self.quantity
+
+
+
+
+
