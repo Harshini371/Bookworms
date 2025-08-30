@@ -42,3 +42,19 @@ class VendorSerializer(serializers.ModelSerializer):
         logger.debug("Vendor profile created: %s", vendor_instance)
         
         return vendor_instance
+    
+class OrderSerializer(serializers.Serializer):
+    total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    status = serializers.ChoiceField(choices = [
+        ("pending","Pending"),
+        ("paid", "Paid"),
+        ("shipped","Shipped"),
+        ("canceled","Canceled"),
+        ("delivered", "Delivered")])
+    book = serializers.IntegerField(required=True)
+    language = serializers.CharField(required = True)
+    quantity = serializers.IntegerField(required = True)
+    unit_price = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    discount_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+
+    

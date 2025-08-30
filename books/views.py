@@ -5,10 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import Book, Author, Vendor, Genre, BookEditions
+from .models import Book, Author, Vendor, Genre, BookEditions, Order, OrderItem
 from iam.permissions import IsAdminUser,IsSuperAdminUser, IsVendorUser
 from rest_framework.permissions import IsAuthenticated 
-from .serializers import AuthorSerializer, VendorSerializer
+from .serializers import AuthorSerializer, VendorSerializer, OrderSerializer
 from iam.models import CustomUser, profile
 from datetime import datetime, date
 
@@ -314,4 +314,43 @@ class BookListView(APIView):
         except Exception as e:
             logger.error("Error retrieving books: %s", str(e))
             return Response({"error": "An error occurred while retrieving books: " + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class CreateOrders(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = OrderSerializer(data=request.data)
+            if serializer.is_valid():
+                
+                book_id = serializer.validated_date['book']
+                book_edition= serializer.validated_data['language']
+                try:
+                    book_object = Book.objects.get(id = book_id)
+                    edition = BookEditions.objects.get(book =book_object, language = book_edition)
+                except Exception as e:
+                    return Response({"error":"Book Not Found"}, status= status.HTTP_400_BAD_REQUEST)
+                
+                order= Order.objects.create(
+                    total_amount = serializer.validated_data['total_amount'],
+                    status = serializer.validated_data['status']
+                )
+                oder_item = OrderItem.objects.create(
+                    edition = edition,
+                    order = order,
+                    unit_price = serializer.validated_data['unit_price'],
+                    discount_amount = serializer.validated_data['discount_amount']    
+                )
+                return Response({"message":"order has been created"}, status = status.HTTP_200_OK)
+            
+            return Response({"error":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": "An error occurred while retrieving books: " + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+        
+        
+
+
+
         
