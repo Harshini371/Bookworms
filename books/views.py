@@ -56,14 +56,20 @@ class AuthorListView(APIView):
                 
                 author_object = CustomUser.objects.select_related("profile","author_profile").get(id=book_author.author_id, is_active=True)
                 logger.debug("Processing author object: %s", author_object)
+                logger.debug("Processing author object profile: %s", author_object.profile)
+                logger.debug("Processing author object author_profile: %s", author_object.author_profile)
+                logger.debug("Author object details: %s, %s, %s", author_object.first_name, author_object.last_name, author_object.email)
+                logger.debug("Author profile details: %s", author_object.author_profile.bio if hasattr(author_object, 'author_profile') else None)
+                
                 data = {
-                    "id": author_object.Author.id,
+                    
+                    "id": author_object.author_profile.id,
                     "first_name": author_object.first_name,
                     "last_name": author_object.last_name,
                     "email": author_object.email,
                     "is_active": author_object.is_active,
                     "profile": {
-                        "bio": author_object.Author.bio if hasattr(author_object, 'Author') else None,
+                        "bio": author_object.author_profile.bio if hasattr(author_object, 'Author') else None,
                         "phone_number": author_object.profile.phone_number if hasattr(author_object, 'profile') else None,
                         "D_no": author_object.profile.D_no if hasattr(author_object, 'profile') else None,
                         "street_name": author_object.profile.street_name if hasattr(author_object, 'profile') else None,

@@ -144,9 +144,11 @@ class LoginView(APIView):
                     }
                     refresh.payload.update(payload_data)
                     return Response({
+                        'data':{
                         'refresh': str(refresh),
                         'access': str(refresh.access_token), 
-                        'message':'logged in successfully'},status=status.HTTP_200_OK)
+                        'user_data' : payload_data,
+                        'message':'logged in successfully'}},status=status.HTTP_200_OK)
                 else:
                     logger.warning(f"Login failed for user {email}. User not found or inactive.")
                     return Response({"error": "Invalid credentials or user is inactive."}, status=status.HTTP_400_BAD_REQUEST)
